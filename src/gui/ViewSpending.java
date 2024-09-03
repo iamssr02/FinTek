@@ -54,7 +54,8 @@ public class ViewSpending extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         category = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("View Spending");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -336,6 +337,7 @@ public class ViewSpending extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void d1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_d1PropertyChange
