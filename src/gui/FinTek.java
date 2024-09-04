@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class FinTek extends javax.swing.JFrame {
@@ -13,10 +14,9 @@ public class FinTek extends javax.swing.JFrame {
         displayCategory();
         getEntries();
         dateField.setSelectableDateRange(null, new java.util.Date());
-        dateField.getDateEditor().setDate(new java.util.Date());
-        dateField.getDateEditor().setEnabled(false);
+        dateField.setDate(new java.util.Date());
+        ((JTextField) dateField.getDateEditor().getUiComponent()).setEditable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        dateField.setDate(new java.util.Date());
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -66,9 +66,7 @@ public class FinTek extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,18 +130,18 @@ public class FinTek extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateField, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addComponent(dateField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(amountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                .addComponent(amountTextField)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addCategoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(addCategoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(categoryComboBox, 0, 124, Short.MAX_VALUE)
+                        .addComponent(categoryComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(addSpendingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -254,7 +252,6 @@ public class FinTek extends javax.swing.JFrame {
         jMenu2.add(addViewCategoryMenuItem);
         jMenu2.add(jSeparator2);
 
-        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -275,15 +272,13 @@ public class FinTek extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(removeSpendingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1))
-                        .addContainerGap())))
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeSpendingButton))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE))
+                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,7 +303,7 @@ public class FinTek extends javax.swing.JFrame {
         try{
             categoryComboBox.removeAllItems();
             ResultSet resultSet=db.DbConnect.statement.executeQuery(
-                    "select * from category_info");
+                    "SELECT * FROM category_info");
             while(resultSet.next()){
                 categoryComboBox.addItem(resultSet.getString("category"));
             }
@@ -327,8 +322,8 @@ public class FinTek extends javax.swing.JFrame {
             LocalDate currentDate = LocalDate.now();
             java.time.LocalDate boundaryDate = currentDate.minusDays(30);
             ResultSet resultSet = db.DbConnect.statement.executeQuery(
-                "select * from spendings where date<='"+
-                    currentDate+"' and date>='"+boundaryDate+"'");
+                "SELECT * FROM spendings WHERE date<='"+
+                    currentDate+"' AND date>='"+boundaryDate+"'");
             int total=0;
             while(resultSet.next()){
                 int amt=resultSet.getInt("amount");
@@ -352,7 +347,7 @@ public class FinTek extends javax.swing.JFrame {
                 int sid = (Integer) table.getValueAt(rowIndex, 0);
                 try{
                     db.DbConnect.statement.executeUpdate(
-                            "delete from spendings where sid='" + sid + "'");
+                            "DELETE FROM spendings WHERE sid='" + sid + "'");
                     JOptionPane.showMessageDialog(null, 
                             "Spending deleted successfully!");
                     getEntries();
@@ -396,7 +391,7 @@ public class FinTek extends javax.swing.JFrame {
                 int amount = Integer.parseInt(amountText);
                 Date date = new Date(dt.getTime());
                 db.DbConnect.statement.executeUpdate(
-                        "insert into spendings (category,date,amount) values('"+category+"','"
+                        "INSERT INTO spendings (category,date,amount) VALUES('"+category+"','"
                                 +date+"',"+amount+")");
                 JOptionPane.showMessageDialog(null, "Expense added successfully!");
                 getEntries();
@@ -429,34 +424,7 @@ public class FinTek extends javax.swing.JFrame {
         new ViewSpending().setVisible(true);
     }//GEN-LAST:event_viewSpendingMenuItemActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FinTek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FinTek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FinTek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FinTek.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FinTek().setVisible(true);

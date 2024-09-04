@@ -20,7 +20,7 @@ public class Category extends javax.swing.JFrame {
                 defaultTableModel.removeRow(0);
             }
             ResultSet resultSet=db.DbConnect.statement.executeQuery(
-                    "select * from category_info");
+                    "SELECT * FROM category_info");
             int serialNumber=0;
             while(resultSet.next()){
                 String category=resultSet.getString("category");
@@ -200,7 +200,7 @@ public class Category extends javax.swing.JFrame {
                 String category = (String) table.getValueAt(rowIndex, 1);
                 try{
                     db.DbConnect.statement.executeUpdate(
-                            "delete from category_info where category='" + category + "'");
+                            "DELETE FROM category_info WHERE category='" + category + "'");
                     JOptionPane.showMessageDialog(null, 
                             "Category deleted successfully!");
                     getEntries();
@@ -217,13 +217,13 @@ public class Category extends javax.swing.JFrame {
             String category=categoryName.getText();
             if(!category.equals("")){
                 db.DbConnect.statement.executeUpdate(
-                    "insert into category_info values('"+category+"')");
+                    "INSERT INTO category_info values('"+category+"')");
                 JOptionPane.showMessageDialog(null, 
                        "Category Added Successfully!");
                 getEntries();
             }
             else{
-               JOptionPane.showMessageDialog(null, "Please enter the category first!");
+               JOptionPane.showMessageDialog(null, "Please enter the category first");
             }
         }
         catch(SQLIntegrityConstraintViolationException exception){
