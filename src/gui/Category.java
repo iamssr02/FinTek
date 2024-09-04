@@ -1,20 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui;
 
-/**
- *
- * @author Swapnodip
- */
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 public class Category extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Category
-     */
     public Category() {
         initComponents();
+//        getEntries();
+    }
+    
+    private void getEntries(){
+        try{
+            javax.swing.table.DefaultTableModel dtm=
+           (javax.swing.table.DefaultTableModel)table.getModel();
+            int rc=dtm.getRowCount();
+            while(rc--!=0){
+                dtm.removeRow(0);
+            }
+            ResultSet rs=db.DbConnect.statement.executeQuery(
+                    "select * from category_info");
+            int sno=0;
+            while(rs.next()){
+                String category=rs.getString("category");
+//                Object o[]={++sno,category};
+//                dtm.addRow(o);
+                java.util.Vector row=new java.util.Vector();
+                row.add(++sno);
+                row.add(category);
+                dtm.addRow(row);
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
 
     /**
@@ -29,13 +47,13 @@ public class Category extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        categoryName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Category");
@@ -60,9 +78,9 @@ public class Category extends javax.swing.JFrame {
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
         );
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        categoryName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                categoryNameActionPerformed(evt);
             }
         });
 
@@ -70,10 +88,15 @@ public class Category extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Category:");
 
-        jButton2.setBackground(new java.awt.Color(51, 204, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Add");
+        addButton.setBackground(new java.awt.Color(51, 204, 0));
+        addButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        addButton.setForeground(new java.awt.Color(255, 255, 255));
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,9 +109,9 @@ public class Category extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                        .addComponent(categoryName, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(addButton)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -98,9 +121,9 @@ public class Category extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(categoryName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton2))
+                    .addComponent(addButton))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -117,7 +140,7 @@ public class Category extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -133,8 +156,8 @@ public class Category extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        table.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,13 +192,35 @@ public class Category extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void categoryNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_categoryNameActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        try{
+            String category=categoryName.getText();
+            if(!category.equals("")){
+                db.DbConnect.statement.executeUpdate(
+                    "insert into category_info values('"+category+"')");
+                JOptionPane.showMessageDialog(null, 
+                       "Category Added Successfully!");
+    //            getEntries();
+            }
+            else{
+               JOptionPane.showMessageDialog(null, "Please enter the category first!");
+            }
+        }
+        catch(SQLIntegrityConstraintViolationException exception){
+            JOptionPane.showMessageDialog(null, "Category already exists");
+        }
+        catch(Exception exception){
+            JOptionPane.showMessageDialog(null, exception);
+        }        
+    }//GEN-LAST:event_addButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,7 +258,8 @@ public class Category extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton addButton;
+    private javax.swing.JTextField categoryName;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -221,7 +267,6 @@ public class Category extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

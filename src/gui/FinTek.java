@@ -49,6 +49,7 @@ public class FinTek extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -232,6 +233,7 @@ public class FinTek extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem2);
+        jMenu2.add(jSeparator2);
 
         jMenuItem3.setText("Exit");
         jMenu2.add(jMenuItem3);
@@ -351,6 +353,7 @@ public class FinTek extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
