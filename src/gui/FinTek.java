@@ -323,11 +323,12 @@ public class FinTek extends javax.swing.JFrame {
             java.time.LocalDate boundaryDate = currentDate.minusDays(30);
             ResultSet resultSet = db.DbConnect.statement.executeQuery(
                 "SELECT * FROM spendings WHERE date<='"+
-                    currentDate+"' AND date>='"+boundaryDate+"'");
-            int total=0;
+                    currentDate+"' AND date>='"+boundaryDate+"' ORDER BY date");
+            int total=0, id=0;
             while(resultSet.next()){
                 int amt=resultSet.getInt("amount");
                 total+=amt;
+                id++;
                 Object row[]={resultSet.getInt("sid"), resultSet.getDate("date"), resultSet.getString("category"), amt};
                 defaultTableModel.addRow(row);
             }
